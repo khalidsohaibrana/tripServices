@@ -1,13 +1,14 @@
 import React from 'react';
 import {ImageBackground, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Button, Icon} from 'react-native-paper';
+import {Button, Icon, useTheme} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import Logo from '../../theme/assets/TripServicesLogo.jpeg';
 import BgImage from '../../theme/assets/bgImage.jpg';
-import {colors} from '../../theme/colors';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const theme = useTheme();
+  const styles = createStyles(theme);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -19,7 +20,7 @@ const HomeScreen = () => {
         <View style={styles.header}>
           <Icon source={Logo} size={300} />
         </View>
-        <View style={styles.headerStrip}></View>
+        <View style={styles.headerStrip} />
 
         <View style={styles.container}>
           <Button
@@ -35,7 +36,7 @@ const HomeScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = theme => StyleSheet.create({
   safeArea: {
     flex: 1,
   },
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.logoSurface,
     width: '100%',
     alignItems: 'center',
     borderBottomRightRadius: 50,
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 50,
     padding: 10,
     width: '79%',
-    backgroundColor: colors.accent,
+    backgroundColor: theme.colors.accent,
   },
   button: {
     height: 50,

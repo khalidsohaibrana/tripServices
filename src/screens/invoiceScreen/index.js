@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import InvoiceForm from '../../components/invoices/InvoiceForm';
 
@@ -13,6 +13,6 @@ export default function InvoiceScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
+    flex: 1,
   },
 });

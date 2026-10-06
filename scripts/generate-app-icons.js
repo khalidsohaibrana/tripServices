@@ -60,7 +60,9 @@ async function main() {
   console.log('Generating Android launcher icons...');
   for (const { folder, px } of androidSizes) {
     const dir = path.join(androidRes, folder);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
     await image
       .clone()
       .resize(px, px)
@@ -74,7 +76,9 @@ async function main() {
   }
 
   console.log('Generating iOS App Icon set...');
-  if (!fs.existsSync(iosAppIcon)) fs.mkdirSync(iosAppIcon, { recursive: true });
+  if (!fs.existsSync(iosAppIcon)) {
+    fs.mkdirSync(iosAppIcon, { recursive: true });
+  }
   for (const { px, filename } of iosSizes) {
     await image
       .clone()
