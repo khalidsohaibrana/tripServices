@@ -1,0 +1,81 @@
+name: Brand checks
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      brands: ${{ steps.list.outputs.brands }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - id: list
+        run: echo "brands=$(node scripts/brand.js list)" >> "$GITHUB_OUTPUT"
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm run brand:validate-all
+      - run: npm run lint
+      - run: npm test -- --runInBand
+
+  android:
+    needs: [discover, validate]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        brand: ${{ fromJson(needs.discover.outputs.brands) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: npm ci
+      - run: node scripts/brand.js prepare ${{ matrix.brand }}
+      - run: ./gradlew :app:assembleBrandedDebug
+        working-directory: android
+
+  ios:
+    needs: [discover, validate]
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        brand: ${{ fromJson(needs.discover.outputs.brands) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+      - run: npm ci
+      - run: node scripts/brand.js prepare ${{ matrix.brand }}
+      - run: bundle exec pod install
+        working-directory: ios
+      - run: xcodebuild -workspace TripServices.xcworkspace -scheme TripServices -configuration Debug -destination 'generic/platform=iOS Simulator' -xcconfig Brand.xcconfig CODE_SIGNING_ALLOWED=NO build -quiet
+        working-directory: ios

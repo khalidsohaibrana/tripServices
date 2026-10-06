@@ -18,6 +18,7 @@ import {
   createTask,
   normalizeInvoiceValues,
 } from '../../../services/invoices/utils';
+import {brand} from '../../../brand';
 
 const ADDITIONAL_FIELDS = [
   {label: 'Add company name', key: 'companyName'},
@@ -292,7 +293,7 @@ const InvoiceFormView = ({handleSave, date, setDate}) => {
                         error={
                           !!(errors.tasks && errors.tasks[index]?.unitPrice)
                         }
-                        right={<TextInput.Affix text="£" />}
+                        right={<TextInput.Affix text={brand.invoice.currency} />}
                       />
                       {errors.tasks && errors.tasks[index]?.unitPrice && (
                         <Text style={styles.errorText}>
@@ -330,11 +331,11 @@ const InvoiceFormView = ({handleSave, date, setDate}) => {
                 label="Subtotal"
                 value={totals.subTotal.toFixed(2)}
                 editable={false}
-                right={<TextInput.Affix text="£" />}
+                right={<TextInput.Affix text={brand.invoice.currency} />}
                 style={styles.input}
               />
               <TextInput
-                label="VAT"
+                label={brand.invoice.taxLabel}
                 value={String(values.vat)}
                 onChangeText={handleChange('vat')}
                 keyboardType="numeric"
@@ -347,7 +348,7 @@ const InvoiceFormView = ({handleSave, date, setDate}) => {
                 label="Total"
                 value={totals.total.toFixed(2)}
                 editable={false}
-                right={<TextInput.Affix text="£" />}
+                right={<TextInput.Affix text={brand.invoice.currency} />}
                 style={styles.input}
               />
               <View style={styles.sectionContainer}>

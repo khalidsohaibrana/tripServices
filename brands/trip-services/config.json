@@ -1,0 +1,76 @@
+{
+  "id": "trip-services",
+  "displayName": "TripServices",
+  "androidApplicationId": "com.tripservices",
+  "iosBundleId": "com.tripservices",
+  "company": {
+    "name": "Trip Electric Services LTD",
+    "registrationNumber": "14472728",
+    "address": "",
+    "tagline": "24/7 Emergency Electrician Services",
+    "contact": {
+      "email": "tripservices@hotmail.com",
+      "phone": "+447529910522",
+      "website": "https://tripelectric.co.uk/"
+    },
+    "banking": {
+      "label": "Bank details",
+      "details": [
+        {"label": "Sort Code", "value": "60-06-14"},
+        {"label": "Account Number", "value": "35390018"}
+      ]
+    }
+  },
+  "invoice": {
+    "currency": "GBP",
+    "locale": "en-GB",
+    "title": "Invoice",
+    "defaultNote": "Please get a EICR as soon as possible by a qualified electrician.",
+    "paymentInstruction": "Make all payments to",
+    "footerMessage": "We appreciate your business",
+    "taxLabel": "VAT",
+    "colors": {
+      "heading": "#00488F",
+      "tagline": "#FA9626"
+    }
+  },
+  "theme": {
+    "light": {
+      "primary": "#FFA500",
+      "secondary": "#333333",
+      "accent": "#007BFF",
+      "background": "#FFFFFF",
+      "surface": "#FFFFFF",
+      "surfaceVariant": "#F8F9FA",
+      "logoSurface": "#FFFFFF",
+      "text": "#000000",
+      "onPrimary": "#FFFFFF",
+      "textMuted": "#4F4A58",
+      "border": "#333333",
+      "error": "#B00020",
+      "subtleBackground": "#F8F9FA"
+    },
+    "dark": {
+      "primary": "#FFB13B",
+      "secondary": "#EAEAEA",
+      "accent": "#5EA8FF",
+      "background": "#101010",
+      "surface": "#1B1B1B",
+      "surfaceVariant": "#262626",
+      "logoSurface": "#FFFFFF",
+      "text": "#FFFFFF",
+      "onPrimary": "#101010",
+      "textMuted": "#D8D2DC",
+      "border": "#EAEAEA",
+      "error": "#FFB4AB",
+      "subtleBackground": "#101010"
+    }
+  },
+  "assets": {
+    "logo": "assets/logo.jpeg",
+    "background": "assets/background.jpg",
+    "appIcon": "assets/app-icon.jpeg",
+    "invoiceLogo": "assets/invoice-logo.jpeg",
+    "launchImage": "assets/logo.jpeg"
+  }
+}

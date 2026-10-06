@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {PermissionsAndroid, Platform} from 'react-native';
-import {COMPANY_INFO} from '../../config/company';
+import {brand} from '../../brand';
 
 const usePermissions = () => {
   const [hasStoragePermission, setHasStoragePermission] = useState(false);
@@ -45,7 +45,7 @@ const usePermissions = () => {
             : PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
         const granted = await PermissionsAndroid.request(permission, {
           title: 'Storage Permission',
-          message: `${COMPANY_INFO.name} needs access to storage to export and share invoices.`,
+          message: `${brand.displayName} needs access to storage to export and share invoices.`,
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',

@@ -3,13 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android": "node scripts/run-brand.js android",
+    "ios": "node scripts/run-brand.js ios",
     "lint": "eslint .",
-    "start": "react-native start",
+    "start": "node scripts/run-brand.js start",
+    "pretest": "node scripts/brand.js prepare",
     "test": "jest",
-    "generate-icons": "node scripts/generate-app-icons.js",
-    "update-invoice-logo": "node scripts/update-invoice-logo.js"
+    "brand:validate": "node scripts/brand.js validate",
+    "brand:validate-all": "node scripts/brand.js validate-all",
+    "brand:prepare": "node scripts/brand.js prepare"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.18",

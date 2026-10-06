@@ -1,7 +1,24 @@
-import {COMPANY_INFO} from '../../config/company';
-import {companyLogoBase64} from './companyLogoBase64';
+import {brand as selectedBrand, invoiceLogoDataUri} from '../../brand';
 
-export const generateInvoiceHtml = async (values, date) => {
+const escapeHtml = value =>
+  String(value ?? '').replace(
+    /[&<>"']/g,
+    char =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      }[char]),
+  );
+
+export const generateInvoiceHtml = async (
+  values,
+  date,
+  brand = selectedBrand,
+  logoDataUri = invoiceLogoDataUri,
+) => {
   const {
     billTo,
     invoiceNo,
@@ -20,11 +37,13 @@ export const generateInvoiceHtml = async (values, date) => {
     note,
   } = values;
 
-  const companyPhone = COMPANY_INFO.contact.phone;
-  const companyEmail = COMPANY_INFO.contact.email;
-  const companyWebsite = COMPANY_INFO.contact.website;
-  const bankSortCode = COMPANY_INFO.banking.sortCode;
-  const bankAccountNumber = COMPANY_INFO.banking.accountNumber;
+  const company = brand.company;
+  const invoice = brand.invoice;
+  const formatMoney = amount =>
+    new Intl.NumberFormat(invoice.locale, {
+      style: 'currency',
+      currency: invoice.currency,
+    }).format(Number(amount) || 0);
 
   const subTotal = tasks
     .reduce((sum, task) => {
@@ -48,10 +67,10 @@ export const generateInvoiceHtml = async (values, date) => {
       const taskSubTotal = (taskQuantity * taskUnitPrice).toFixed(2);
       return `
       <tr class="tableRow">
-        <td class="tableCell">${task.description || ''}</td>
+        <td class="tableCell">${escapeHtml(task.description)}</td>
         <td class="tableCell">${taskQuantity}</td>
-        <td class="tableCell">£${taskUnitPrice.toFixed(2)}</td>
-        <td class="tableCell">£${taskSubTotal}</td>
+        <td class="tableCell">${formatMoney(taskUnitPrice)}</td>
+        <td class="tableCell">${formatMoney(taskSubTotal)}</td>
       </tr>
     `;
     })
@@ -90,7 +109,7 @@ export const generateInvoiceHtml = async (values, date) => {
         margin: 0;
         font-size: 52px;
         font-weight: bold;
-        color: #00488f;
+        color: ${invoice.colors.heading};
         margin-bottom:20px;
       }
       .company-info {
@@ -158,7 +177,7 @@ export const generateInvoiceHtml = async (values, date) => {
         text-align: center;
         padding: 10px 0;
         margin-top: auto; 
-        color: #00488f
+        color: ${invoice.colors.heading}
       }
       .line {
         border-top: 2px solid black;
@@ -197,7 +216,7 @@ export const generateInvoiceHtml = async (values, date) => {
       <!-- Header Section -->
       <div class="header">
         <div>
-          <h1>Invoice</h1>
+          <h1>${escapeHtml(invoice.title)}</h1>
           
           <div>
             <div class="row" >
@@ -207,19 +226,19 @@ export const generateInvoiceHtml = async (values, date) => {
             
             <div class="row" >
               <p>Invoice No: </p>
-              <p><strong>${invoiceNo}</strong></p>
+              <p><strong>${escapeHtml(invoiceNo)}</strong></p>
             </div>
 
             <!-- Bill To Section -->
             <div>
             <div class="row" >
               <p>Bill To: </p>
-              <p><strong>${billTo}</strong></p>
+              <p><strong>${escapeHtml(billTo)}</strong></p>
             </div>
 
             <div class="row" >
               <p> </p>
-              <p> <strong>${customerAddress}</strong></p>
+              <p> <strong>${escapeHtml(customerAddress)}</strong></p>
             </div>
           </div>
         </div>
@@ -229,8 +248,11 @@ export const generateInvoiceHtml = async (values, date) => {
           companyName
             ? `
             <div class="company-logo">
-              <img src="${companyLogoBase64}" alt="Company Logo" />
-              <h3 style="color:#fa9626">${COMPANY_INFO.tagline}</h3>
+              <img src="${logoDataUri}" alt="Company Logo" />
+              <h3 style="color:${invoice.colors.tagline}">${escapeHtml(
+                company.tagline,
+              )}</h3>
+              ${company.address ? `<p>${escapeHtml(company.address)}</p>` : ''}
             </div>
             `
             : ''
@@ -239,21 +261,23 @@ export const generateInvoiceHtml = async (values, date) => {
             ${
               phone
                 ? `
-                <p>Phone: ${companyPhone}</p>
+                <p>Phone: ${escapeHtml(company.contact.phone)}</p>
                 `
                 : ''
             }
             ${
               email
                 ? `
-                <p>Email: ${companyEmail}</p>
+                <p>Email: ${escapeHtml(company.contact.email)}</p>
                 `
                 : ''
             }
             ${
               website
                 ? `
-                <p>Web:<a href="${companyWebsite}">${companyWebsite}</a></p>
+                <p>Web:<a href="${escapeHtml(
+                  company.contact.website,
+                )}">${escapeHtml(company.contact.website)}</a></p>
                 `
                 : ''
             }
@@ -276,15 +300,31 @@ export const generateInvoiceHtml = async (values, date) => {
             <tfoot>
               <tr>
                 <td colspan="3" style="text-align: right">Sub Total</td>
-                <td>£${subTotal}</td>
+                <td>${formatMoney(subTotal)}</td>
               </tr>
               <tr>
-                <td colspan="3" style="text-align: right">VAT</td>
-                <td>£${parseFloat(vat).toFixed(2)}</td>
+                <td colspan="3" style="text-align: right">${escapeHtml(
+                  invoice.taxLabel,
+                )}</td>
+                <td>${formatMoney(vat)}</td>
               </tr>
+              ${
+                Number(discount) > 0
+                  ? `<tr><td colspan="3" style="text-align: right">Discount</td><td>-${formatMoney(
+                      discount,
+                    )}</td></tr>`
+                  : ''
+              }
+              ${
+                Number(other) > 0
+                  ? `<tr><td colspan="3" style="text-align: right">Other</td><td>${formatMoney(
+                      other,
+                    )}</td></tr>`
+                  : ''
+              }
               <tr>
                 <td colspan="3" style="text-align: right"><strong>Total</strong></td>
-                <td><strong>£${total}</strong></td>
+                <td><strong>${formatMoney(total)}</strong></td>
               </tr>
             </tfoot>
           </table>
@@ -295,7 +335,9 @@ export const generateInvoiceHtml = async (values, date) => {
           specialInstructions
             ? `
             <p style="margin-bottom: 10px">Special Instruction</p>
-            <p style="margin-bottom: 30px">${specialInstructionsText}</p>
+            <p style="margin-bottom: 30px">${escapeHtml(
+              specialInstructionsText,
+            )}</p>
             `
             : ''
         }
@@ -306,14 +348,25 @@ export const generateInvoiceHtml = async (values, date) => {
             ${
               companyName
                 ? `
-                <p>Make all payments to <strong>${COMPANY_INFO.name}</strong></p>
+                <p>${escapeHtml(
+                  invoice.paymentInstruction,
+                )} <strong>${escapeHtml(company.name)}</strong></p>
                 `
                 : ''
             }
             ${
               bankAccount
                 ? `
-                <p style="max-width: 200px flex-grow: 1">Sort Code: <strong>${bankSortCode}</strong> Account Number: <strong>${bankAccountNumber}</strong></p>
+                <p>${escapeHtml(
+                  company.banking.label,
+                )}: ${company.banking.details
+                    .map(
+                      detail =>
+                        `${escapeHtml(detail.label)}: <strong>${escapeHtml(
+                          detail.value,
+                        )}</strong>`,
+                    )
+                    .join(' ')}</p>
                 `
                 : ''
             }
@@ -322,7 +375,7 @@ export const generateInvoiceHtml = async (values, date) => {
                 ? `
                 <p style="max-width: 100px flex-grow: 1">
                   If you have any questions concerning this invoice, 
-                  contact <strong>${companyEmail}</strong>
+                  contact <strong>${escapeHtml(company.contact.email)}</strong>
                 </p>
                 `
                 : ''
@@ -334,7 +387,7 @@ export const generateInvoiceHtml = async (values, date) => {
               note
                 ? `
                 <p>
-                  Please get a EICR as soon as possible by a qualified electrician.
+                  ${escapeHtml(invoice.defaultNote)}
                 </p>
                 `
                 : ''
@@ -345,10 +398,12 @@ export const generateInvoiceHtml = async (values, date) => {
       <!-- Footer -->
       <div class="footer">
         <p><strong>Thank You</strong></p>
-        <p>We appreciate your business</p>
+        <p>${escapeHtml(invoice.footerMessage)}</p>
         ${
           companyName
-            ? `<p>${COMPANY_INFO.name} - Company Number : ${COMPANY_INFO.registrationNumber}</p>`
+            ? `<p>${escapeHtml(company.name)} - Company Number : ${escapeHtml(
+                company.registrationNumber,
+              )}</p>`
             : ''
         }
       </div>
