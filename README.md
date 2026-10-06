@@ -73,6 +73,14 @@ Make sure an Android emulator is running before launching Android. For iOS, open
 
 Use the same brand ID for Metro and the native build. Stop Metro before switching brands in the same checkout. iOS requires CocoaPods dependencies to be installed and uses the generated `ios/Brand.xcconfig` during CLI builds.
 
+Generated brand files are ignored and shared by the checkout. They represent the last profile that was prepared, not the branch name. Always pass the brand ID explicitly when switching profiles. For a standalone Android test APK, use the brand-aware command below; it prepares the requested profile immediately before Gradle runs:
+
+```bash
+npm run android:apk -- <brand-id>
+```
+
+Do not run `./gradlew :app:assembleBrandedDebug` after switching brands unless you have first run `npm run brand:prepare -- <brand-id>`. A direct Gradle build uses whichever generated profile was prepared most recently. Likewise, `npm test` defaults to Trip Services; use `BRAND=<brand-id> npm test -- --runInBand` when tests need to leave another profile prepared.
+
 ### Testing
 
 ```bash
@@ -120,6 +128,7 @@ See [White Label Guide](docs/white-label.md). The short path is to copy `brands/
 npm run brand:validate -- <new-id>
 npm run android -- <new-id>
 npm run ios -- <new-id>
+npm run android:apk -- <new-id>
 ```
 
 The brand profile supplies app names and identifiers, company and bank details, currency, invoice copy, logos, and light/dark colors. The build command generates native assets and settings. Do not edit `src/brand/selected.js` or files under `android/app/src/branded/`; they are generated and ignored by Git.
