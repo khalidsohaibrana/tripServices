@@ -13,6 +13,9 @@ const escapeHtml = value =>
       }[char]),
   );
 
+const isPendingValue = value =>
+  typeof value === 'string' && value.includes('PENDING_CLIENT_CONFIRMATION');
+
 export const generateInvoiceHtml = async (
   values,
   date,
@@ -87,7 +90,7 @@ export const generateInvoiceHtml = async (
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 20px 60px;
-        line-height: 1;
+        line-height: 1.3;
         font-size: 14px;
         display: flex;
         flex-direction: column;
@@ -161,16 +164,20 @@ export const generateInvoiceHtml = async (
         height: 40px;
       }
       .payment-instructions {
-        margin-top: 60px; 
+        margin-top: 30px;
         text-align: left;
         font-size: 14px;
-        line-height:0
+        line-height: 1.35;
+      }
+      .payment-instructions p {
+        margin: 0 0 5px;
+        overflow-wrap: anywhere;
       }
       .note {
-        margin-top: 30px; 
+        margin-top: 20px;
         text-align: left;
         font-size: 14px;
-        line-height:0;
+        line-height: 1.35;
       }
       .footer {
         width: 100%;
@@ -252,7 +259,11 @@ export const generateInvoiceHtml = async (
               <h3 style="color:${invoice.colors.tagline}">${escapeHtml(
                 company.tagline,
               )}</h3>
-              ${company.address ? `<p>${escapeHtml(company.address)}</p>` : ''}
+              ${
+                company.address && !isPendingValue(company.address)
+                  ? `<p>${escapeHtml(company.address)}</p>`
+                  : ''
+              }
             </div>
             `
             : ''
@@ -348,7 +359,7 @@ export const generateInvoiceHtml = async (
             ${
               companyName
                 ? `
-                <p>${escapeHtml(
+                <p class="payment-row">${escapeHtml(
                   invoice.paymentInstruction,
                 )} <strong>${escapeHtml(company.name)}</strong></p>
                 `
@@ -357,23 +368,24 @@ export const generateInvoiceHtml = async (
             ${
               bankAccount
                 ? `
-                <p>${escapeHtml(
+                <p class="payment-row">${escapeHtml(
                   company.banking.label,
-                )}: ${company.banking.details
-                    .map(
-                      detail =>
-                        `${escapeHtml(detail.label)}: <strong>${escapeHtml(
-                          detail.value,
-                        )}</strong>`,
-                    )
-                    .join(' ')}</p>
+                )}:</p>
+                ${company.banking.details
+                  .map(
+                    detail =>
+                      `<p class="payment-row">${escapeHtml(
+                        detail.label,
+                      )}: <strong>${escapeHtml(detail.value)}</strong></p>`,
+                  )
+                  .join('')}
                 `
                 : ''
             }
             ${
               email
                 ? `
-                <p style="max-width: 100px flex-grow: 1">
+                <p class="payment-row">
                   If you have any questions concerning this invoice, 
                   contact <strong>${escapeHtml(company.contact.email)}</strong>
                 </p>
@@ -382,7 +394,7 @@ export const generateInvoiceHtml = async (
             }
           </div>
 
-          <div>
+          <div class="note">
             ${
               note
                 ? `
@@ -400,7 +412,7 @@ export const generateInvoiceHtml = async (
         <p><strong>Thank You</strong></p>
         <p>${escapeHtml(invoice.footerMessage)}</p>
         ${
-          companyName
+          companyName && !isPendingValue(company.registrationNumber)
             ? `<p>${escapeHtml(company.name)} - Company Number : ${escapeHtml(
                 company.registrationNumber,
               )}</p>`
