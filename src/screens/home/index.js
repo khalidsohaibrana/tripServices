@@ -2,8 +2,7 @@ import React from 'react';
 import {ImageBackground, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Button, Icon, useTheme} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-import Logo from '../../theme/assets/TripServicesLogo.jpeg';
-import BgImage from '../../theme/assets/bgImage.jpg';
+import {brandAssets} from '../../brand';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -13,12 +12,12 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ImageBackground
-        source={BgImage}
+        source={brandAssets.background}
         style={styles.background}
         resizeMode="cover">
         <View style={styles.overlay} />
         <View style={styles.header}>
-          <Icon source={Logo} size={300} />
+          <Icon source={brandAssets.logo} size={300} />
         </View>
         <View style={styles.headerStrip} />
 

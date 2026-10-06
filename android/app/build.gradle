@@ -8,6 +8,7 @@ apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
 react {
+    debuggableVariants = ["brandedDebug"]
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '../..'
     // root = file("../../")
@@ -73,6 +74,13 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
+def brandProperties = new Properties()
+def brandPropertiesFile = file('brand.properties')
+if (!brandPropertiesFile.exists()) {
+    throw new GradleException('Run npm run brand:prepare before building Android')
+}
+brandPropertiesFile.withInputStream { brandProperties.load(it) }
+
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -80,11 +88,17 @@ android {
 
     namespace "com.tripservices"
     defaultConfig {
-        applicationId "com.tripservices"
+        applicationId brandProperties.getProperty('brandApplicationId')
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+    }
+    flavorDimensions "brand"
+    productFlavors {
+        branded {
+            dimension "brand"
+        }
     }
     signingConfigs {
         debug {
@@ -93,15 +107,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (System.getenv('BRAND_KEYSTORE_FILE')) {
+                storeFile file(System.getenv('BRAND_KEYSTORE_FILE'))
+                storePassword System.getenv('BRAND_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('BRAND_KEY_ALIAS')
+                keyPassword System.getenv('BRAND_KEY_PASSWORD')
+            }
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
