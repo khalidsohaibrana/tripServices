@@ -14,26 +14,62 @@ A React Native mobile application for generating, printing, and sharing professi
 
 ### Prerequisites
 
-Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions.
+Install the React Native CLI development environment for your target platform:
+
+- Node.js 18 or newer
+- npm
+- Watchman on macOS
+- Android Studio with Android SDK 34 and an Android emulator or device
+- Xcode and CocoaPods for iOS builds on macOS
+- Ruby 2.6.10 or newer for CocoaPods tooling
+
+Follow the official [React Native environment setup](https://reactnative.dev/docs/environment-setup) guide and choose **React Native CLI**, not Expo.
 
 ### Installation
 
 ```bash
+# Clone the repository
+git clone git@github.com:khalidsohaibrana/tripServices.git
+cd tripServices
+
+# Install JavaScript dependencies
 npm install
 ```
 
-### Running the App
+For iOS, install CocoaPods dependencies after `npm install`:
 
 ```bash
-# Start Metro bundler
+cd ios
+bundle install
+bundle exec pod install
+cd ..
+```
+
+If you do not use Bundler, run `pod install` from the `ios` folder instead.
+
+### Running the App
+
+Start Metro in one terminal:
+
+```bash
 npm start
+```
 
-# Run on Android
+Then run the app from another terminal.
+
+Android:
+
+```bash
 npm run android
+```
 
-# Run on iOS
+iOS:
+
+```bash
 npm run ios
 ```
+
+Make sure an Android emulator is running before launching Android. For iOS, open Xcode first if you need to choose a simulator, signing team, or device.
 
 ### Testing
 
@@ -129,9 +165,14 @@ The home screen uses the same file and scales it responsively; no extra step nee
 # Clean Android build
 cd android && ./gradlew clean && cd ..
 
-# Clean iOS build
-cd ios && pod install && cd ..
+# Reinstall iOS pods
+cd ios && bundle exec pod install && cd ..
+
+# Reset Metro cache
+npm start -- --reset-cache
 ```
+
+If Android cannot find the SDK, confirm `ANDROID_HOME` points to your Android SDK folder and that SDK 34 is installed in Android Studio.
 
 ### Permission Issues (Android)
 
