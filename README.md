@@ -108,6 +108,7 @@ brands/              # One directory per branded app
 - **Contributor Rules**: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 - **Agent Rules**: [`AGENTS.md`](AGENTS.md)
 - **Release Checklist**: [`docs/release-checklist.md`](docs/release-checklist.md)
+- **Client Intake Form**: [`docs/client-brand-intake.md`](docs/client-brand-intake.md)
 
 ## Common Tasks
 

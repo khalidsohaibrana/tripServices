@@ -4,6 +4,8 @@ The application has one shared invoice implementation. A brand profile supplies 
 
 For repository contribution rules, shared-versus-brand ownership, and release responsibilities, read [CONTRIBUTING.md](../CONTRIBUTING.md), [the architecture guide](architecture.md), and [the release checklist](release-checklist.md).
 
+Use the [client intake form](client-brand-intake.md) to collect the information and approvals required before creating a new brand profile.
+
 ## Create a Brand
 
 1. Copy `brands/trip-services/` to `brands/<id>/`. Use a lowercase ID with hyphens.
