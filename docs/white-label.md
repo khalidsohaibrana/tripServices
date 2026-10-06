@@ -24,11 +24,12 @@ npm run brand:validate -- <id>
 npm run start -- <id>
 npm run android -- <id>
 npm run ios -- <id>
+npm run android:apk -- <id>
 npm run lint
 BRAND=<id> npm test -- --runInBand
 ```
 
-Run Metro and the native build with the same ID. A separate checkout or Git worktree is recommended for simultaneous builds of different brands. The preparation step writes ignored generated files; it does not modify shared source or committed native assets. Android uses a `branded` flavor. iOS CLI builds pass `ios/Brand.xcconfig`; when building directly in Xcode, supply that file as an `-xcconfig` build argument or use the CLI. Install pods before the first iOS build.
+Run Metro and the native build with the same ID. Stop Metro before switching brands in the same checkout, then restart it with the new ID and `--reset-cache`. A separate checkout or Git worktree is required for simultaneous builds of different brands. The preparation step writes ignored generated files; it does not modify shared source or committed native assets. Android uses a `branded` flavor. Use `npm run android:apk -- <id>` for a standalone debug APK because it prepares the requested profile in the same command. A direct Gradle build uses whichever profile was prepared most recently. `npm test` defaults to Trip Services unless `BRAND=<id>` is provided. iOS CLI builds pass `ios/Brand.xcconfig`; when building directly in Xcode, supply that file as an `-xcconfig` build argument or use the CLI. Install pods before the first iOS build.
 
 The generated iOS build config targets iOS 15 or newer because the current Xcode toolchain no longer builds this dependency set for iOS 13.4.
 

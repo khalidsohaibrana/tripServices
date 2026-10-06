@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "node scripts/run-brand.js android",
+    "android:apk": "node scripts/build-android.js",
     "ios": "node scripts/run-brand.js ios",
     "lint": "eslint .",
     "start": "node scripts/run-brand.js start",

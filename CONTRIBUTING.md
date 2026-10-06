@@ -72,9 +72,12 @@ Copy an existing profile, give it a unique lowercase ID, replace its configurati
 npm run brand:validate -- new-brand
 npm run android -- new-brand
 npm run ios -- new-brand
+npm run android:apk -- new-brand
 ```
 
 Do not edit `src/brand/selected.js`, `ios/Brand.xcconfig`, `android/app/brand.properties`, or `android/app/src/branded/`. They are generated from the selected profile and ignored by Git.
+
+Generated files are shared by the checkout and can retain the last prepared brand across branch switches. Always pass the brand ID to `start`, `android`, `ios`, `android:apk`, `brand:prepare`, and `BRAND` when running tests. Stop Metro and restart it with the same brand after switching profiles. Never use a direct Gradle build for a different brand without preparing that brand first.
 
 ## Secrets and Releases
 
