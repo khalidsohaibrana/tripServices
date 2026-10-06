@@ -1,0 +1,76 @@
+{
+  "id": "fast-emergency-electrician",
+  "displayName": "Fast Emergency Electrician",
+  "androidApplicationId": "com.fastemergencyelectrician",
+  "iosBundleId": "com.fastemergencyelectrician",
+  "company": {
+    "name": "Fast emergency electrician LTD",
+    "registrationNumber": "PENDING_CLIENT_CONFIRMATION",
+    "address": "PENDING_CLIENT_CONFIRMATION",
+    "tagline": "Fast. Safe. Reliable.",
+    "contact": {
+      "email": "Fastemergencyelectrician@gmail.com",
+      "phone": "+447424323392",
+      "website": "https://www.fastelectrician.co.uk/"
+    },
+    "banking": {
+      "label": "Bank details",
+      "details": [
+        {"label": "Sort Code", "value": "20-57-76"},
+        {"label": "Account Number", "value": "13869695"}
+      ]
+    }
+  },
+  "invoice": {
+    "currency": "GBP",
+    "locale": "en-GB",
+    "title": "Invoice",
+    "defaultNote": "Please contact us if you have any questions about this invoice.",
+    "paymentInstruction": "Make all payments to",
+    "footerMessage": "Thank you for choosing Fast Emergency Electrician",
+    "taxLabel": "VAT",
+    "colors": {
+      "heading": "#DE3439",
+      "tagline": "#101F35"
+    }
+  },
+  "theme": {
+    "light": {
+      "primary": "#DE3439",
+      "secondary": "#101F35",
+      "accent": "#167746",
+      "background": "#F3F5F7",
+      "surface": "#FFFFFF",
+      "surfaceVariant": "#E4E8EE",
+      "logoSurface": "#FFFFFF",
+      "text": "#101F35",
+      "onPrimary": "#FFFFFF",
+      "textMuted": "#657183",
+      "border": "#C1CBDA",
+      "error": "#B42318",
+      "subtleBackground": "#F3F5F7"
+    },
+    "dark": {
+      "primary": "#FF6B70",
+      "secondary": "#E4E8EE",
+      "accent": "#63C58E",
+      "background": "#0B1220",
+      "surface": "#101F35",
+      "surfaceVariant": "#1B2B43",
+      "logoSurface": "#FFFFFF",
+      "text": "#FFFFFF",
+      "onPrimary": "#101F35",
+      "textMuted": "#C1CBDA",
+      "border": "#657183",
+      "error": "#FFB4AB",
+      "subtleBackground": "#0B1220"
+    }
+  },
+  "assets": {
+    "logo": "assets/logo.png",
+    "background": "assets/background.png",
+    "appIcon": "assets/app-icon.png",
+    "invoiceLogo": "assets/invoice-logo.png",
+    "launchImage": "assets/logo.png"
+  }
+}
