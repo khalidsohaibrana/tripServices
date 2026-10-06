@@ -35,6 +35,10 @@ Each profile contains:
 
 `scripts/brand.js` validates required values, colors, identifiers, assets, image dimensions, currency support, and duplicate application IDs. It then generates the selected JavaScript profile, Android resources, and iOS assets/build settings.
 
+## Branching
+
+Shared work is integrated through `develop` and promoted to `main` for releases. Every client white-label branch uses `whitelabel-<brand-name>`, with lowercase hyphenated words. For example, `Acme Electrical Services` becomes `whitelabel-acme-electrical`. Create it from the current `develop` branch, keep the client profile under `brands/<id>/`, and open its completed PR back into `develop`. Shared feature work should continue through normal feature branches and PRs into `develop` so it remains available to every brand.
+
 ## Generated Files
 
 Generated files are ignored because they depend on the selected build. They must be recreated by `npm run brand:prepare -- <id>` or the brand-aware run commands. Never commit them and never make source changes that depend on one generated profile being present in the repository.

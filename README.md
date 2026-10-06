@@ -124,6 +124,8 @@ npm run ios -- <new-id>
 
 The brand profile supplies app names and identifiers, company and bank details, currency, invoice copy, logos, and light/dark colors. The build command generates native assets and settings. Do not edit `src/brand/selected.js` or files under `android/app/src/branded/`; they are generated and ignored by Git.
 
+White-label branches must use the format `whitelabel-<brand-name>`. Use lowercase hyphenated words, for example `whitelabel-acme-electrical`. Create the branch from `develop` and open the completed brand PR back into `develop`.
+
 ### Modify Invoice Calculations
 
 Edit `src/services/invoices/utils.js` for calculation logic.

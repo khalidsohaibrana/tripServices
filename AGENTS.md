@@ -10,6 +10,7 @@ Maintain one shared React Native invoice application that can produce multiple b
 
 - Read `CONTRIBUTING.md`, `docs/architecture.md`, and `docs/white-label.md` before changing architecture, branding, invoice output, or native build files.
 - Keep brand-specific data and assets under `brands/<brand-id>/`.
+- Name client branches `whitelabel-<brand-name>` using lowercase hyphenated words.
 - Keep shared behavior in `src/`, `scripts/`, or the native build infrastructure.
 - Do not hard-code a company name, logo, bank detail, currency symbol, currency code, invoice copy, or brand color in shared feature code.
 - Use semantic theme colors so both light and dark mode remain configurable.
@@ -17,6 +18,10 @@ Maintain one shared React Native invoice application that can produce multiple b
 - Validate every brand after configuration changes.
 - Preserve unrelated user changes in the working tree.
 - Do not merge pull requests. Leave changes in the requested branch and report the PR URL.
+
+## White-Label Branch Naming
+
+Use `whitelabel-<brand-name>`. Normalize the client name to lowercase, replace spaces and punctuation with hyphens, and keep it short. For example, `Acme Electrical Services` becomes `whitelabel-acme-electrical`. Create the branch from the current `develop` branch and propose its approved profile back into `develop`.
 
 ## Workflow
 

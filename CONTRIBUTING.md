@@ -17,11 +17,11 @@ Use this flow:
 
 - `develop` is the integration branch for shared features and brand profiles.
 - `main` is the release baseline.
-- `brand/<brand-id>` is optional and should be used only when a brand needs an independent release schedule or temporary behavior.
+- `whitelabel-<brand-name>` is used for each client white-label branch.
 
-Create feature branches from the current `develop` branch. Pull requests for shared work target `develop`. Promote tested changes to `main` through a separate release PR. Keep PRs focused and explain the affected brands, tests, native build results, and any required secrets or store configuration.
+Create shared feature branches from the current `develop` branch. Create white-label branches from the current `develop` branch after the shared foundation is available. Pull requests for shared work and approved brand profiles target `develop`. Promote tested changes to `main` through a separate release PR. Keep PRs focused and explain the affected brands, tests, native build results, and any required secrets or store configuration.
 
-Use clear branch names such as `feature/invoice-tax-label`, `fix/dark-calendar`, or `brand/example-client`. Do not put a customer’s private credentials in a branch or commit.
+Use `whitelabel-<brand-name>` for white-label branches. Convert the brand name to lowercase, replace spaces and punctuation with hyphens, and keep the name short. For example, `Acme Electrical Services` becomes `whitelabel-acme-electrical`. Use clear names such as `feature/invoice-tax-label` or `fix/dark-calendar` for shared work. Do not put a customer’s private credentials in a branch or commit.
 
 ## Where Changes Belong
 
