@@ -2,6 +2,8 @@
 
 The application has one shared invoice implementation. A brand profile supplies its app identity, business details, assets, invoice copy, currency, and light/dark colors. The selected profile is compiled into the app; users cannot change brands at runtime.
 
+For repository contribution rules, shared-versus-brand ownership, and release responsibilities, read [CONTRIBUTING.md](../CONTRIBUTING.md), [the architecture guide](architecture.md), and [the release checklist](release-checklist.md).
+
 ## Create a Brand
 
 1. Copy `brands/trip-services/` to `brands/<id>/`. Use a lowercase ID with hyphens.

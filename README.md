@@ -104,6 +104,10 @@ brands/              # One directory per branded app
 - **Invoice Logic**: `src/services/invoices/`
 - **Form Validation**: `src/components/invoices/InvoiceForm/validationSchema.js`
 - **PDF Template**: `src/services/invoices/template.js`
+- **Architecture**: [`docs/architecture.md`](docs/architecture.md)
+- **Contributor Rules**: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- **Agent Rules**: [`AGENTS.md`](AGENTS.md)
+- **Release Checklist**: [`docs/release-checklist.md`](docs/release-checklist.md)
 
 ## Common Tasks
 
