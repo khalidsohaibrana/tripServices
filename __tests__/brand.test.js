@@ -16,6 +16,8 @@ describe('brand configuration', () => {
       company: {
         ...trip.company,
         name: 'Example Company',
+        address: 'PENDING_CLIENT_CONFIRMATION',
+        registrationNumber: 'PENDING_CLIENT_CONFIRMATION',
         tagline: 'Example services',
         contact: {...trip.company.contact, email: 'hello@example.com'},
         banking: {label: 'Payment', details: [{label: 'IBAN', value: 'EX123'}]},
@@ -54,5 +56,8 @@ describe('brand configuration', () => {
     expect(html).toContain('&lt;Service&gt;');
     expect(html).not.toContain('Trip Electric');
     expect(html).not.toContain('£');
+    expect(html).not.toContain('PENDING_CLIENT_CONFIRMATION');
+    expect(html).not.toContain('line-height:0');
+    expect(html).toContain('class="payment-row"');
   });
 });
