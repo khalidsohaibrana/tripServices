@@ -8,11 +8,11 @@ import {
   List,
   Divider,
   Checkbox,
+  useTheme,
 } from 'react-native-paper';
 import {Formik} from 'formik';
 import DateTimePicker from 'react-native-ui-datepicker';
 import {validationSchema} from './validationSchema';
-import {colors} from '../../../theme/colors';
 import {
   computeTotals,
   createTask,
@@ -52,6 +52,8 @@ const InvoiceFormView = ({handleSave, date, setDate}) => {
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [openAccordionIndex, setOpenAccordionIndex] = useState(0);
   const [initialValues] = useState(createInitialValues);
+  const theme = useTheme();
+  const styles = createStyles(theme);
 
   const addTask = useCallback((setFieldValue, tasks) => {
     setFieldValue('tasks', [...tasks, createTask()]);
@@ -120,12 +122,23 @@ const InvoiceFormView = ({handleSave, date, setDate}) => {
                   <View style={styles.datePicker}>
                     <DateTimePicker
                       mode="single"
+                      height={340}
                       date={date}
                       onChange={params => {
+                        if (!params.date) {
+                          return;
+                        }
                         setDate(params.date);
                         setFieldValue('date', params.date);
                         setDatePickerVisible(false);
                       }}
+                      selectedItemColor={theme.colors.primary}
+                      headerButtonColor={theme.colors.text}
+                      headerTextStyle={styles.datePickerHeaderText}
+                      calendarTextStyle={styles.datePickerText}
+                      weekDaysTextStyle={styles.datePickerWeekdayText}
+                      selectedTextStyle={styles.datePickerSelectedText}
+                      todayTextStyle={styles.datePickerTodayText}
                     />
                   </View>
                 )}
@@ -413,9 +426,10 @@ const InvoiceFormView = ({handleSave, date, setDate}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = theme => StyleSheet.create({
   container: {
-    backgroundColor: colors.subtleBackground,
+    flex: 1,
+    backgroundColor: theme.colors.subtleBackground,
   },
   scrollView: {
     padding: 10,
@@ -427,39 +441,62 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 5,
   },
-  datePicker: {},
+  datePicker: {
+    backgroundColor: theme.colors.surface,
+    minHeight: 340,
+  },
+  datePickerHeaderText: {
+    color: theme.colors.text,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  datePickerText: {
+    color: theme.colors.text,
+  },
+  datePickerWeekdayText: {
+    color: theme.colors.textMuted,
+    fontWeight: '600',
+  },
+  datePickerSelectedText: {
+    color: theme.colors.surface,
+    fontWeight: '700',
+  },
+  datePickerTodayText: {
+    color: theme.colors.primary,
+    fontWeight: '700',
+  },
   sectionContainer: {
-    borderColor: colors.secondary,
+    borderColor: theme.colors.outline,
     borderStyle: 'solid',
     borderWidth: 1,
     marginVertical: 10,
-    backgroundColor: colors.background,
+    backgroundColor: theme.colors.surface,
     borderRadius: 5,
     padding: 5,
   },
   accordionContainer: {
-    borderColor: colors.primary,
+    borderColor: theme.colors.primary,
     borderStyle: 'solid',
     borderWidth: 1,
     marginBottom: 10,
-    backgroundColor: colors.background,
+    backgroundColor: theme.colors.surface,
     borderRadius: 5,
     padding: 10,
   },
   sectionTitle: {
     padding: 5,
     paddingHorizontal: 5,
-    color: colors.primary,
+    color: theme.colors.primary,
     fontSize: 18,
-    fontWeight: 700,
+    fontWeight: '700',
   },
   input: {
-    borderColor: colors.text,
+    borderColor: theme.colors.text,
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
-    backgroundColor: colors.subtleBackground,
-    color: colors.text,
+    backgroundColor: theme.colors.surfaceVariant,
+    color: theme.colors.text,
     fontSize: 16,
     marginVertical: 5,
   },
@@ -471,14 +508,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   errorText: {
-    color: 'red',
+    color: theme.colors.error,
     marginBottom: 10,
   },
   deleteButton: {
     margin: 10,
   },
   divider: {
-    backgroundColor: colors.primary,
+    backgroundColor: theme.colors.primary,
     height: 1,
     marginBottom: 10,
   },

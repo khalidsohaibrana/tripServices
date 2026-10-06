@@ -1,29 +1,33 @@
-// theme/theme.js
 import {MD3LightTheme, MD3DarkTheme} from 'react-native-paper';
-import {colors} from './colors'; // Import colors from colors.js
+import {colors} from './colors';
 
-export const lightTheme = {
-  ...MD3LightTheme,
+const buildTheme = (baseTheme, palette) => ({
+  ...baseTheme,
+  roundness: 5,
   colors: {
-    ...MD3LightTheme.colors,
-    primary: colors.primary,
-    secondary: colors.secondary,
-    background: colors.background,
-    accent: colors.accent,
-    text: colors.text,
-    subtleBackground: colors.subtleBackground,
+    ...baseTheme.colors,
+    primary: palette.primary,
+    secondary: palette.secondary,
+    background: palette.background,
+    surface: palette.surface,
+    surfaceVariant: palette.surfaceVariant,
+    logoSurface: palette.logoSurface,
+    outline: palette.border,
+    error: palette.error,
+    accent: palette.accent,
+    text: palette.text,
+    textMuted: palette.textMuted,
+    onPrimary: palette.onPrimary,
+    subtleBackground: palette.subtleBackground,
+    onSurface: palette.text,
+    onBackground: palette.text,
   },
-};
+});
 
-export const darkTheme = {
-  ...MD3DarkTheme,
-  colors: {
-    ...MD3DarkTheme.colors,
-    primary: colors.dark.primary,
-    secondary: colors.dark.secondary,
-    background: colors.dark.background,
-    accent: colors.dark.accent,
-    text: colors.dark.text,
-    subtleBackground: colors.dark.subtleBackground,
-  },
+export const lightTheme = buildTheme(MD3LightTheme, colors);
+export const darkTheme = buildTheme(MD3DarkTheme, colors.dark);
+
+export const appThemes = {
+  light: lightTheme,
+  dark: darkTheme,
 };
